@@ -2,8 +2,10 @@ package ru.gibkin.service;
 
 import com.test_task_tn.TestTaskApplication;
 import com.test_task_tn.business.dao.UserRepository;
+import com.test_task_tn.business.domain.StatusResponse;
 import com.test_task_tn.business.domain.User;
 import com.test_task_tn.business.service.impl.UserService;
+import com.test_task_tn.shared.exceptions.NotFoundUserException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +17,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -26,6 +29,7 @@ public class UserServiceTest {
     private static Timestamp timestamp = new Timestamp(time);
     private static Boolean isOnline = true;
     private static UserService userService;
+    private static StatusResponse STATUS = new StatusResponse(6L, true, false);
     private static final User SERGEY =
             User
                     .builder()
@@ -78,6 +82,17 @@ public class UserServiceTest {
         List<User> usersList = userService.getAll(time, null);
         assertEquals(timeAfterUsers, usersList);
     }
+
+    @Test
+    public void changeStatusTest() {
+        StatusResponse statusResponse = userService.changeStatus(6L, false);
+        assertEquals(STATUS, statusResponse);
+    }
+
+//    @Test
+//    public void changeStatusNotFoundExceptionTest() {
+//        StatusResponse statusResponse = userService.changeStatus(1L, false);
+//    }
 
     @Test
     public void getUsersIsOnline() {
