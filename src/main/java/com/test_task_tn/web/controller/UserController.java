@@ -37,8 +37,8 @@ public class UserController {
      * of users in response body.
      *
      * @param isOnline filters users by status online/offline
-     * @param id     is the Timestamp, in case it presents, the request contains
-     *               users whose status is changed after this timestamp only
+     * @param id       is the Timestamp, in case it presents, the request contains
+     *                 users whose status is changed after this timestamp only
      * @return List of users
      */
     @GetMapping
@@ -62,7 +62,7 @@ public class UserController {
     /**
      * The method changes the status of users,
      *
-     * @param id      - to identify the user in database
+     * @param id            - to identify the user in database
      * @param currentStatus - new status of user, should be true/false
      * @return ResponseEntity with an HttpStatus and contains in ResponseBody
      * id - id of user,
@@ -72,6 +72,6 @@ public class UserController {
     @PutMapping(value = "/{id}")
     public ResponseEntity changeStatus(@PathVariable("id") Long id,
                                        @RequestParam("online") Boolean currentStatus) {
-        return new ResponseEntity<>(userService.changeStatus(id, currentStatus), HttpStatus.OK);
+        return ResponseEntity.ok(userService.changeStatus(id, currentStatus));
     }
 }
