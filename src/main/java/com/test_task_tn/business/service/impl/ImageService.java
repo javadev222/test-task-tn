@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.UUID;
 
 @Service
@@ -21,7 +22,7 @@ public class ImageService {
         return originalFilename != null ? originalFilename.substring(originalFilename.lastIndexOf(".")) : null;
     }
 
-    public String uploadImage(MultipartFile image) throws IOException {
+    public URI uploadImage(MultipartFile image) throws IOException {
         String originalFilename = image.getOriginalFilename();
         if (image.isEmpty()) {
             log.error(String.format(ERROR_TEMPLATE, originalFilename, "file is empty"));
@@ -31,7 +32,7 @@ public class ImageService {
         if (image.getContentType() != null && image.getContentType().startsWith("image/")) {
             File file = new File(UUID.randomUUID().toString() + extension);
             image.transferTo(file);
-            return file.getName();
+            return file.toURI();
         }
         log.error(String.format(ERROR_TEMPLATE, originalFilename, "type is unsupported"));
         throw new BadRequestImageException(image.getContentType(), TypeException.NO_IMAGE);

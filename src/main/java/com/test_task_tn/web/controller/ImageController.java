@@ -2,7 +2,6 @@ package com.test_task_tn.web.controller;
 
 import com.test_task_tn.business.service.impl.ImageService;
 import lombok.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +28,7 @@ public class ImageController {
      * @return the ResponseEntity with HttpStatus and the String with
      */
     @PostMapping(value = "/upload")
-    public ResponseEntity upload(@RequestParam("image") MultipartFile image) throws IOException {
-         return new ResponseEntity<>(imageService.uploadImage(image), HttpStatus.CREATED);
+    public ResponseEntity<String> upload(@RequestParam("image") MultipartFile image) throws IOException {
+        return ResponseEntity.created(imageService.uploadImage(image)).build();
     }
 }
